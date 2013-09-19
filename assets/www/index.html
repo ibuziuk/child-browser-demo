@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<!--The example is based on following examples http://simonmacdonald.blogspot.com/2011/09/phonegap-android-childbrowser-revamp.html
+  		http://line25.com/tutorials/how-to-create-a-trendy-flat-style-nav-menu-in-css-->
+    <meta name="viewport" content="width=320; user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Child Browser Example</title>  
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>  
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8" src="childbrowser.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
+    <link href="css/style.css" rel="stylesheet" />
+    <script type="text/javascript" charset="utf-8">
+    
+    $(document).ready(function(){
+	  $("#navigation").hover(function(){
+	  	$("#status").html("Navigation");
+	 	$("#status").css("color","#5bb2fc");
+	    $("#status").css("display","block");
+	    },function(){
+	    $("#status").css("display","none");
+	  });
+	  $("#noNavigation").hover(function(){
+	  	$("#status").html("no Navigation");
+	 	$("#status").css("color","#58ebd3");
+	    $("#status").css("display","block");
+	    },function(){
+	    $("#status").css("display","none");
+	  });
+	  $("#native").hover(function(){
+	  	$("#status").html("Native");
+	  	$("#status").css("color","#ffa659");
+	    $("#status").css("display","block");
+	    },function(){
+	    $("#status").css("display","none");
+	  });
+	});
+ 
+    // Wait for PhoneGap to load
+    //
+    function init(){
+        document.addEventListener("deviceready", onDeviceReady, false);
+    }
+ 
+    // PhoneGap is ready
+    //
+    function onDeviceReady() {
+        console.log("PhoneGap is ready");
+    }
+    
+    function locationChanged(newurl) {
+        console.log("The JS got this url = " + newurl);
+    }
+    
+    function closed() {
+        console.log("The JS got a close event");
+    }
+    
+    function showPage(locbar) {
+        window.plugins.childBrowser.onLocationChange = locationChanged;
+        window.plugins.childBrowser.onClose = closed;
+        window.plugins.childBrowser.showWebPage("http://www.phonegap.com", {
+            showLocationBar: locbar
+        });
+    }
+    
+    function openExternal() {
+        window.plugins.childBrowser.openExternal("http://www.phonegap.com");
+    }
+ 
+    </script>
+  </head>
+  <body onload="init()" id="stage" class="theme">    
+        <div id="demo">
+        <h1 id="header">Child Browser Demo</h1>
+    	<nav>
+    		<ul>
+    			<li>
+    				 <a href="#" id="navigation" onclick="showPage(true); return false;">
+    					<span>Navigation</span>
+    				</a>
+    			</li>
+    			<li>
+    				  <a href="#" id="noNavigation" onclick="showPage(false); return false;">
+    					<span>No Navigation</span>
+    				</a>
+    			</li>
+    			<li>
+    				<a href="#" id="native" onclick="openExternal(); return false;">
+    					<span>Native</span>
+    				</a>
+    			</li>			
+    		</ul>
+    	</nav>
+    	<div id="status"></div>  
+    </div>
+  </body>
+</html>
